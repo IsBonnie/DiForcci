@@ -1,0 +1,29 @@
+@'
+# Maven
+target/
+*.class
+
+# Configuracoes locais e credenciais
+.env
+.env.*
+!.env.example
+application-local.properties
+application-local.yml
+application-local.yaml
+*.keystore
+*.jks
+*.p12
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+'@ | Set-Content -Encoding UTF8 .gitignore
+src/main/resources/application.properties

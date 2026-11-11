@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administração | DiForcci</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+<div class="app">
+
+    <aside class="sidebar">
+        <div class="marca">
+            <img src="/img/LogoDiForcciPassaro-transparente.png"
+                 alt="Logo DiForcci">
+            <h2>DiForcci</h2>
+            <p>Painel administrativo</p>
+        </div>
+
+        <nav class="menu">
+            <a href="/admin.html" class="ativo">▦ Visão geral</a>
+            <a href="#" data-modulo="Produtos">▣ Produtos</a>
+            <a href="#" data-modulo="Estoque">▤ Estoque</a>
+            <a href="#" data-modulo="Remessas">▥ Remessas</a>
+            <a href="#" data-modulo="Pedidos">▧ Pedidos</a>
+            <a href="#" data-modulo="Devoluções">↩ Devoluções</a>
+        </nav>
+
+        <form action="/logout" method="POST" class="logout-form">
+            <button type="submit" class="btn-sair">
+                Sair do sistema
+            </button>
+        </form>
+    </aside>
+
+    <main class="conteudo">
+        <header class="topbar">
+            <div>
+                <h1>Visão geral</h1>
+                <p>Bem-vindo ao sistema de gestão DiForcci</p>
+            </div>
+            <span class="usuario">Administrador</span>
+        </header>
+
+        <section class="indicadores">
+            <article class="card">
+                <span>Produtos cadastrados</span>
+                <strong id="total-produtos">—</strong>
+                <small>Cadastro de produtos</small>
+            </article>
+
+            <article class="card">
+                <span>Estoque disponível</span>
+                <strong>—</strong>
+                <small>Integração pendente</small>
+            </article>
+
+            <article class="card">
+                <span>Remessas pendentes</span>
+                <strong>—</strong>
+                <small>Integração pendente</small>
+            </article>
+
+            <article class="card">
+                <span>Pedidos em aberto</span>
+                <strong>—</strong>
+                <small>Integração pendente</small>
+            </article>
+        </section>
+
+        <section class="painel">
+            <h2>Central de gerenciamento</h2>
+            <p>
+                Utilize o menu lateral para acessar os módulos
+                do sistema.
+            </p>
+            <div id="mensagem-modulo" role="status"></div>
+        </section>
+
+        
+<section id="secao-produtos" class="painel" hidden>
+    <div class="produtos-cabecalho">
+        <div>
+            <h2>Gerenciamento de produtos</h2>
+            <p>Consulte e cadastre os produtos da DiForcci.</p>
+        </div>
+        <button type="button" id="btn-novo-produto">
+            + Novo produto
+        </button>
+    </div>
+
+    <div class="produtos-filtros">
+        <input
+            type="search"
+            id="pesquisa-produtos"
+            placeholder="Pesquisar por nome, ID ou NCM"
+            aria-label="Pesquisar produtos"
+        >
+    </div>
+
+    <div id="aviso-produtos" role="status" aria-live="polite"></div>
+
+    <div class="tabela-container">
+        <table class="tabela-produtos">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Unidade</th>
+                    <th>NCM</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="lista-produtos">
+                <tr>
+                    <td colspan="5">Carregando produtos...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="area-cadastro-produto" hidden>
+        <h3>Cadastrar novo produto</h3>
+
+        <form id="form-produto">
+            <label for="produto-nome">Nome</label>
+            <input id="produto-nome" name="nome" required maxlength="255">
+
+            <label for="produto-unidade">Unidade</label>
+            <select id="produto-unidade" name="unidade" required>
+                <option value="">Selecione</option>
+                <option value="KG">KG</option>
+                <option value="UN">Unidade</option>
+                <option value="CX">Caixa</option>
+            </select>
+
+            <label for="produto-ncm">NCM</label>
+            <input id="produto-ncm" name="ncm" maxlength="8" pattern="[0-9]{8}" required>
+
+            <div class="acoes-formulario">
+                <button type="submit" id="btn-salvar-produto">Salvar produto</button>
+                <button type="button" id="btn-cancelar-produto">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- MÓDULO ESTOQUE -->
+<section id="secao-estoque" class="painel" hidden>
+
+    <div class="produtos-cabecalho">
+        <div>
+            <h2>Gerenciamento de estoque</h2>
+            <p>Consulte as mercadorias, remessas e lotes da DiForcci.</p>
+        </div>
+    </div>
+
+    <div class="estoque-indicadores">
+        <article class="card">
+            <span>Produtos com saldo</span>
+            <strong id="estoque-total-produtos">—</strong>
+            <small>Produtos com estoque disponível</small>
+        </article>
+
+        <article class="card">
+            <span>Lotes cadastrados</span>
+            <strong id="estoque-total-lotes">—</strong>
+            <small>Lotes registrados no sistema</small>
+        </article>
+
+        <article class="card">
+            <span>Lotes próximos do vencimento</span>
+            <strong id="estoque-lotes-vencendo">—</strong>
+            <small>Validade nos próximos 30 dias</small>
+        </article>
+    </div>
+
+    <div class="produtos-filtros">
+        <input
+            type="search"
+            id="pesquisa-estoque"
+            placeholder="Pesquisar produto, remessa ou lote"
+            aria-label="Pesquisar estoque"
+        >
+    </div>
+
+    <div id="aviso-estoque" role="status" aria-live="polite"></div>
+
+    <div class="tabela-container">
+        <table class="tabela-produtos">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Remessa</th>
+                    <th>Lote</th>
+                    <th>Validade</th>
+                    <th>Unidade</th>
+                    <th>Saldo disponível</th>
+                </tr>
+            </thead>
+            <tbody id="lista-estoque">
+                <tr>
+                    <td colspan="6">Aguardando consulta de estoque...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</section>
+<!-- FIM DO MÓDULO ESTOQUE -->
+
+    </main>
+</div>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>

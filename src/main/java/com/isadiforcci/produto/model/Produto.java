@@ -1,22 +1,39 @@
 package com.isadiforcci.produto.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.Column;
+
+import java.math.BigDecimal;
 
 @Entity
+@Table(name = "produtos")
 public class Produto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 150, nullable = false)
     private String nome;
+
+    @Column(length = 50)
     private String remessa;
-    private Integer quantidade;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal quantidade;
+
+    @Column(length = 20)
     private String unidade;
+
+    @Column(length = 20)
     private String ncm;
+
+    @Column(name = "codigo_fabrica", length = 30)
+    private String codigoFabrica;
 
     public Produto() {
     }
@@ -45,11 +62,11 @@ public class Produto {
         this.remessa = remessa;
     }
 
-    public Integer getQuantidade() {
+    public BigDecimal getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(Integer quantidade) {
+    public void setQuantidade(BigDecimal quantidade) {
         this.quantidade = quantidade;
     }
 
@@ -67,5 +84,13 @@ public class Produto {
 
     public void setNcm(String ncm) {
         this.ncm = ncm;
+    }
+
+    public String getCodigoFabrica() {
+        return codigoFabrica;
+    }
+
+    public void setCodigoFabrica(String codigoFabrica) {
+        this.codigoFabrica = codigoFabrica;
     }
 }

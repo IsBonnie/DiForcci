@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Administrativo | DiForcci</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+
+    <main class="login-container">
+
+        <div class="logo-area">
+         <img
+            src="/img/LogoDiForcciPassaro-transparente.png"
+            alt="Logo DiForcci"
+            class="logo"
+            >
+        </div>
+
+        <section class="login-card">
+
+            <h1>Acesso administrativo</h1>
+            <p class="subtitle">Área restrita</p>
+
+            <div id="mensagem-erro" class="mensagem erro" hidden>
+                E-mail ou senha incorretos.
+            </div>
+
+            <div id="mensagem-logout" class="mensagem sucesso" hidden>
+                Você saiu do sistema com sucesso.
+            </div>
+
+            <form action="/login" method="POST">
+
+                <input type="hidden" name="_csrf" id="csrf-token">
+
+                <div class="input-group">
+                    <span class="input-icon" aria-hidden="true">♙</span>
+                    <input
+                        type="email"
+                        name="username"
+                        placeholder="E-mail"
+                        aria-label="E-mail"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <span class="input-icon" aria-hidden="true">🔒</span>
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Senha"
+                        aria-label="Senha"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn-entrar">
+                    Entrar
+                </button>
+
+            </form>
+
+
+        </section>
+
+    </main>
+
+    <script>
+        const parametros = new URLSearchParams(window.location.search);
+
+        if (parametros.has("error")) {
+            document.getElementById("mensagem-erro").hidden = false;
+        }
+
+        if (parametros.has("logout")) {
+            document.getElementById("mensagem-logout").hidden = false;
+        }
+    </script>
+
+    <script>
+    fetch("/csrf", { credentials: "same-origin" })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Não foi possível obter o token CSRF");
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById("csrf-token").value = data.token;
+        })
+        .catch(error => console.error(error));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>DiForcci - Teste de PDF</title>
+</head>
+<body>
+
+    <h2>Teste de leitura de nota fiscal</h2>
+
+    <input type="file" id="arquivo" accept=".pdf,application/pdf">
+
+    <button onclick="lerPdf()">Ler PDF</button>
+
+    <h3>Resultado da leitura:</h3>
+    <pre id="resultado" style="white-space:pre-wrap;overflow-wrap:anywhere;"></pre>
+
+    <script>
+        async function lerPdf() {
+            const arquivo = document.getElementById("arquivo").files[0];
+            const resultado = document.getElementById("resultado");
+
+            if (!arquivo) {
+                alert("Selecione um PDF primeiro!");
+                return;
+            }
+
+            resultado.textContent = "Lendo PDF...";
+
+            try {
+                const csrfResposta = await fetch("/csrf");
+
+                if (!csrfResposta.ok) {
+                    throw new Error("Não foi possível obter o token CSRF.");
+                }
+
+                const csrf = await csrfResposta.json();
+
+                const dados = new FormData();
+                dados.append("arquivo", arquivo);
+
+                const resposta = await fetch("/remessas/pdf/ler", {
+                    method: "POST",
+                    headers: {
+                        [csrf.headerName]: csrf.token
+                    },
+                    body: dados
+                });
+
+                const conteudo = await resposta.json();
+
+                if (!resposta.ok) {
+                    throw new Error(conteudo.erro || "Erro ao ler PDF.");
+                }
+
+                resultado.textContent =
+                "ITENS IDENTIFICADOS:\n" +
+                JSON.stringify(conteudo.itensEncontrados, null, 2) +
+                "\n\nCÓDIGOS ENCONTRADOS:\n" +
+                JSON.stringify(conteudo.codigosEncontrados, null, 2) +
+                "\n\nTEXTO ORIGINAL:\n" +
+                (conteudo.texto || "Nenhum texto encontrado.");
+
+            } catch (erro) {
+                resultado.textContent = "Erro: " + erro.message;
+            }
+        }
+    </script>
+
+</body>
+</html>
